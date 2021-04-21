@@ -16,6 +16,15 @@ echo "Hello world!"
 # Compile genTick.c
 gcc -Wall -o genTick genTick.c
 
-# Run genTick.o with delay argument (millisecond)
-./genTick $delay
+# Compile genSensorData.c
+# gcc -Wall -o genSensorData genSensorData.c
 
+# Run genTick.o with delay argument (millisecond)
+#./genTick $delay
+
+# Run genSensorData
+./genTick $delay | ./test
+
+# if [[ $? -ne 0 ]]; then
+#     echo "error"
+# fi
