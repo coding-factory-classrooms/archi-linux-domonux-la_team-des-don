@@ -11,19 +11,19 @@ else
     echo "Invalid arguments"
     exit 1
 fi
-echo "Hello world!"
+#echo "Hello world!"
 
 # Compile genTick.c
 gcc -Wall -o genTick genTick.c
 
 # Compile genSensorData.c
-# gcc -Wall -o genSensorData genSensorData.c
+#gcc -Wall -o genSensorData genSensorData.c
 
 # Run genTick.o with delay argument (millisecond)
-#./genTick $delay
+./genTick $delay | python3 genSensorData.py
 
 # Run genSensorData
-./genTick $delay | ./test
+#./genTick $delay | ./test
 
 # if [[ $? -ne 0 ]]; then
 #     echo "error"
