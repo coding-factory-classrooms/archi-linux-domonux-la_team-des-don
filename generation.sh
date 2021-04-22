@@ -23,7 +23,7 @@ mkdir -p /home/$USER/$dossier
 touch $stdoutFile $stderrFile && mv -t /home/$USER/$dossier $stdoutFile $stderrFile 
 
 
-echo 'user id' $UID
+echo 'user Id :' $UID
 
 # Compile genTick.c
 gcc -Wall -o genTick genTick.c
@@ -38,10 +38,10 @@ gcc -Wall -o genTick genTick.c
 ./genTick $delay | python3 genSensorData.py | {
     while IFS= read -r line; do
         if echo $line | grep -q "Sensor_id"; then
-            echo $line | cut -d";" -f 1,2,4,5 >> $dossier/$stdoutFile
+            echo $line >> /home/$USER/$dossier/$stdoutFile
         elif echo $line | grep -q "Error#"; then
-            echo $line >> $dossier/$stderrFile
-        fi
+            echo $line >> /home/$USER/$dossier/$stderrFile
+        fi  
     done
 }
  

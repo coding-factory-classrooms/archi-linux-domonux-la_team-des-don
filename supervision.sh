@@ -12,14 +12,16 @@ if [ -d "$FILE" ]; then
 else
     echo that $dossier does not exist   
     exit 1 
-fi
+fi 
 
-if [[ -z $generationPID ]]; then
+processUser=$(eval "pgrep -u $USER 'generation.sh' | wc -c")
+echo $processUser
+
+if [[ $processUser -gt 1 ]]; then
+    echo 'Running'
+else
     echo 'not Running'
     exit 1
-
-else
-    echo 'Running'
 fi   
 
 actualsize=$(wc -c <"$stdoutFile")
