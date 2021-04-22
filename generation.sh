@@ -38,10 +38,10 @@ gcc -Wall -o genTick genTick.c
 ./genTick $delay | python3 genSensorData.py | {
     while IFS= read -r line; do
         if echo $line | grep -q "Sensor_id"; then
-            echo $line >> /home/$USER/$dossier/$stdoutFile
+            echo $line | cut -d";" -f 1,2,4,5 >> $dossier/$stdoutFile
         elif echo $line | grep -q "Error#"; then
-            echo $line >> /home/$USER/$dossier/$stderrFile
-        fi  
+            echo $line >> $dossier/$stderrFile
+        fi
     done
 }
  

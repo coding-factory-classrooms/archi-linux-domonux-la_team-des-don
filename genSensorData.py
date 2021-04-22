@@ -19,7 +19,7 @@ def generate_value():
     max_value = randint(20, 25)
 
     #on print le message qui contient l'id du capteur, le nom de la pièce, la temp minimale, maximale et une moyenne
-    print("Sensor_id: "+str(room)+" Room: "+str(list_rooms[room])+" min_value="+str(min_value)+" max_value="+str(max_value)+" value="+str((min_value+max_value)/2), flush=True)
+    print("Sensor_id: "+str(room)+"; "+str(list_rooms[room])+"; min_value="+str(min_value)+"; max_value="+str(max_value)+"; value="+str((min_value+max_value)/2)+";", flush=True)
 
 #on génère un message d'erreur
 def generate_error():
