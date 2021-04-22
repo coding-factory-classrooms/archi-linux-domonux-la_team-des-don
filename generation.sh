@@ -38,10 +38,10 @@ gcc -Wall -o genTick genTick.c
     while IFS= read -r line; do
         echo $line
         if echo $line | grep -q "Sensor_id"; then
-            echo $line >> $dossier/$stdoutFile
+            echo $line | cut -d";" -f 1,2,4,5 >> $dossier/$stdoutFile
         elif echo $line | grep -q "Error#"; then
             echo $line >> $dossier/$stderrFile
-        fi  
+        fi
     done
 }
 # if [[ $retour grep -E 'Error' ]]; then
