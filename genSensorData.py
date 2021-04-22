@@ -19,7 +19,7 @@ def generate_value():
     max_value = randint(20, 25)
 
     #on print le message qui contient l'id du capteur, le nom de la pièce, la temp minimale, maximale et une moyenne
-    print("Sensor_id: "+str(room)+" Room: "+str(list_rooms[room])+" min_value="+str(min_value)+" max_value="+str(max_value)+" value="+str((min_value+max_value)/2))
+    print("Sensor_id: "+str(room)+" Room: "+str(list_rooms[room])+" min_value="+str(min_value)+" max_value="+str(max_value)+" value="+str((min_value+max_value)/2), flush=True)
 
 #on génère un message d'erreur
 def generate_error():
@@ -34,7 +34,7 @@ def generate_error():
     error_desc = list_errors[err_nbr][2]
 
     #on print le message d'erreur qui contient l'id de l'erreur, le nom de la pièce, le code de l'erreur et sa description
-    print("Error#"+error_id+" Room: "+list_rooms[randint(1, 4)]+" code="+error_code+", "+error_desc, file=sys.stderr)
+    print("Error#"+error_id+" Room: "+list_rooms[randint(1, 4)]+" code="+error_code+", "+error_desc, file=sys.stderr, flush=True)
 
 #on reçoit l'entrée standart et on la traite
 def start():
