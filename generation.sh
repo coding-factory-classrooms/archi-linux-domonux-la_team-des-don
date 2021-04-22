@@ -18,6 +18,17 @@
 #fi
 echo "Hello world!"
 
+launch=null 
+
+for i in $* do
+    echo launch
+done
+trap myFunction 2
+
+myFunction(){
+    echo $0
+}
+
 mkdir -p /home/$USER/$dossier 
 
 touch $stdoutFile $stderrFile && mv -t /home/$USER/$dossier $stdoutFile $stderrFile 
