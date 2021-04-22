@@ -18,11 +18,12 @@
 #fi
 echo "Hello world!"
 
-mkdir -p $dossier
+mkdir -p /home/$USER/$dossier 
 
-touch $stdoutFile $stderrFile && mv -t $dossier $stdoutFile $stderrFile 
+touch $stdoutFile $stderrFile && mv -t /home/$USER/$dossier $stdoutFile $stderrFile 
 
 
+echo 'user id' $UID
 
 # Compile genTick.c
 gcc -Wall -o genTick genTick.c
@@ -36,7 +37,6 @@ gcc -Wall -o genTick genTick.c
 # Run genSensorData
 ./genTick $delay | python3 genSensorData.py | {
     while IFS= read -r line; do
-        echo $line
         if echo $line | grep -q "Sensor_id"; then
             echo $line | cut -d";" -f 1,2,4,5 >> $dossier/$stdoutFile
         elif echo $line | grep -q "Error#"; then
@@ -44,6 +44,7 @@ gcc -Wall -o genTick genTick.c
         fi
     done
 }
+ 
 # if [[ $retour grep -E 'Error' ]]; then
 #     do print('error')
 #     done
