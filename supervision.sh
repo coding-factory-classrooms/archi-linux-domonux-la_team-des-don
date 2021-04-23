@@ -3,76 +3,67 @@
 dossier=$1
 stdoutFile=$2
 stderrFile=$3
-fileSize=$4
-launch_generation=$5
-generationPID=$(pgrep -x "generation.sh")
+maxFileSize=$4
+delayForGeneration=$5
 
+trapFunction(){
+    pkill generation
+    echo "Goodbye !"
+}
 
-
-
-
-
+echo "Start of Supervision"
 FILE=/home/$USER/$dossier
-if [ -d "$FILE" ]; then
-    cd /home/$USER/$dossier
-else
-    echo that $dossier does not exist   
-    exit 1 
-fi 
 
-processUser=$(eval "pgrep -u $USER 'generation.sh' | wc -c")
-echo $processUser
+while true;do
+    if [ -d "$FILE" ]; then
+        pathForFiles=/home/$USER/$dossier
+    else
+        echo that $dossier does not exist   
+        exit 1 
+    fi
 
-if [[ $processUser -gt 1 ]]; then
-    echo 'Running'
-else
-    echo 'not Running'
-    exit 1
-fi   
+    processUser=$(eval "pgrep -u $USER 'generation.sh' | wc -c")
+    echo $processUser
 
+    if [[ $processUser -gt 1 ]]; then
+        echo 'Running'
+    else
+        echo 'Not Running'
+        # Retrieve absolute path of generation.sh
+        path=$(pwd)
+        $path/generation.sh $5 $1 $2 $3 &
+    fi
 
-actualsize=$(wc -l <"$stdoutFile")
-echo "actual_size : "$actualsize
-if [[ $actualsize -ge $fileSize ]]; then
-    echo size is over $fileSize bytes of $stdoutFile
-    kill $generationPID
-
-    cat $stdoutFile | wc -l > infos.log
-    cat $stderrFile | wc -l > errors.log
+    generationPID=$(pgrep -x "generation.sh")
     
-    cat $stdoutFile | sort >> infos.log
-    cat $stderrFile | sort >> errors.log
 
+    outfileSize=$(wc -c <"$pathForFiles/$stdoutFile")
+    errfileSize=$(wc -c <"$pathForFiles/$stderrFile")
+    if [[ $outfileSize -ge $maxFileSize || $errfileSize -ge $maxFileSize ]]; then
+        echo size of $stdoutFile or $stderrFile is over $maxFileSize bytes
+        kill -SIGSTOP $generationPID
 
-    tarfile=$(date +"%Y_%m_%d_%H_%M_%S")_logs.tar
-    tar -cvf $tarfile *.txt infos.log errors.log
-    rm -rf infos.log errors.log
-    cd /home/etienne/Bureau/archi-linux-domonux-la_team-des-don
-    echo $launch_generation
-    eval $launch_generation
-else
-    echo size is under $fileSize bytes of $stdoutFile
-fi
+        cd /home/$USER/$dossier
 
+        cat $stdoutFile | wc -l > infos.log
+        cat $stderrFile | wc -l > errors.log
+        
+        cat $stdoutFile | sort >> infos.log
+        cat $stderrFile | sort >> errors.log
 
+        
+        tarfile=$(date +"%Y_%m_%d_%H_%M_%S")_logs.tar
+        tar -cvf $tarfile *.txt infos.log errors.log
+        rm -rf infos.log errors.log
+        #empty text files
+        > $stdoutFile
+        > $stderrFile
+        cd -
+        echo "resume generation"
+        kill -SIGCONT $generationPID
+    else
+        echo size of $stderrFile or $stdoutFile is under $maxFileSize bytes
+    fi
+done
 
-
-actualsize=$(wc -c <"$stderrFile")
-if [[ $actualsize -ge $fileSize ]]; then
-    
-    echo size is over $fileSize bytes of $stderrFile
-    kill pgrep "generation.sh"
-    
-    cat $stdoutFile | wc -l > infos.log
-    cat $stderrFile | wc -l > errors.log
-
-    cat $stdoutFile | sort >> infos.log
-    cat $stderrFile | sort >> errors.log
-    
-    tarfile=$(date +"%Y_%m_%d_%H_%M_%S")_logs.tar
-    tar -cvf $tarfile *.txt infos.log errors.log
-    rm -rf infos.log errors.log
-    eval $5
-else
-    echo size is under $fileSize bytes of $stderrFile
-fi
+echo "End of Supervision"
