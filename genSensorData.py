@@ -3,6 +3,7 @@
 import fileinput
 import sys
 from random import randint
+import signal
 
 #on génère un message de sortie standart
 def generate_value():

@@ -18,6 +18,17 @@
 #fi
 echo "Hello world!"
 
+launch=""
+
+toto(){
+    for i in $*
+    do
+        launch+="$i"
+    done
+    echo $launch
+}
+toto
+
 mkdir -p /home/$USER/$dossier 
 
 touch $stdoutFile $stderrFile && mv -t /home/$USER/$dossier $stdoutFile $stderrFile 
