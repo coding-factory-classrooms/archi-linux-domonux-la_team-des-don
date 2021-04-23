@@ -1,6 +1,6 @@
 #!/bin/bash
 
-dossier=$1
+folder=$1
 stdoutFile=$2
 stderrFile=$3
 maxFileSize=$4
@@ -12,13 +12,13 @@ trapFunction(){
 }
 
 echo "Start of Supervision"
-FILE=/home/$USER/$dossier
+FILE=/home/$USER/$folder
 
 while true;do
     if [ -d "$FILE" ]; then
-        pathForFiles=/home/$USER/$dossier
+        pathForFiles=/home/$USER/$folder
     else
-        echo that $dossier does not exist   
+        echo that $folder does not exist   
         exit 1 
     fi
 
@@ -43,7 +43,7 @@ while true;do
         echo size of $stdoutFile or $stderrFile is over $maxFileSize bytes
         kill -SIGSTOP $generationPID
 
-        cd /home/$USER/$dossier
+        cd /home/$USER/$folder
 
         cat $stdoutFile | wc -l > infos.log
         cat $stderrFile | wc -l > errors.log

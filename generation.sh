@@ -3,7 +3,7 @@
 # set -x
 
 delay=$1
-dossier=$2
+folder=$2
 stdoutFile=$3
 stderrFile=$4   
 
@@ -15,9 +15,9 @@ stderrFile=$4
 #trap "echo generation resumed" SIGCONT
 
 
-mkdir -p /home/$USER/$dossier 
+mkdir -p /home/$USER/$folder 
 
-touch $stdoutFile $stderrFile && mv -t /home/$USER/$dossier $stdoutFile $stderrFile 
+touch $stdoutFile $stderrFile && mv -t /home/$USER/$folder $stdoutFile $stderrFile 
 
 
 echo 'user Id :' $UID
@@ -34,11 +34,11 @@ gcc -Wall -o genTick genTick.c
 # Run genSensorData
 ./genTick $delay | python3 genSensorData.py 2>&1 | {
     while IFS= read -r line; do
-    echo "/home/$USER/$dossier/$stdoutFile"
+    echo "/home/$USER/$folder/$stdoutFile"
         if echo $line | grep -q "Sensor_id"; then
-            echo $line >> /home/$USER/$dossier/$stdoutFile
+            echo $line >> /home/$USER/$folder/$stdoutFile
         elif echo $line | grep -q "Error#"; then
-            echo $line >> /home/$USER/$dossier/$stderrFile
+            echo $line >> /home/$USER/$folder/$stderrFile
         fi
     done
 }
