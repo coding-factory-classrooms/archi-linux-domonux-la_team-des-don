@@ -18,11 +18,11 @@
 #fi
 echo "Hello world!"
 
-launch=null 
+# launch=null 
 
-for i in $* do
-    echo launch
-done
+# for i in $* do
+#     echo launch
+# done
 trap myFunction 2
 
 myFunction(){
@@ -46,7 +46,7 @@ gcc -Wall -o genTick genTick.c
 #./genTick $delay
 
 # Run genSensorData
-./genTick $delay | python3 genSensorData.py | {
+./genTick $delay | python3 genSensorData.py 2>&1 | {
     while IFS= read -r line; do
         if echo $line | grep -q "Sensor_id"; then
             echo $line >> /home/$USER/$dossier/$stdoutFile
