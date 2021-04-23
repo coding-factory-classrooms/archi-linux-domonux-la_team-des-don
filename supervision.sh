@@ -60,7 +60,7 @@ while true;do
         tarfile=$(date +"%Y_%m_%d_%H_%M_%S")_logs.tar
         tar -cvf $tarfile *.txt infos.log errors.log
         rm -rf infos.log errors.log
-        #empty text files
+        # empty text files
         > $stdoutFile
         > $stderrFile
         cd -

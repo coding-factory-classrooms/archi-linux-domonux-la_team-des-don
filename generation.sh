@@ -19,7 +19,6 @@ mkdir -p /home/$USER/$folder
 
 touch $stdoutFile $stderrFile && mv -t /home/$USER/$folder $stdoutFile $stderrFile 
 
-
 echo 'user Id :' $UID
 
 # Compile genTick.c
