@@ -1,10 +1,15 @@
 #!/bin/bash
 
-folder=$1
-stdoutFile=$2
-stderrFile=$3
-maxFileSize=$4
-delayForGeneration=$5
+if [[ $# -eq 5 ]]; then
+    folder=$1
+    stdoutFile=$2
+    stderrFile=$3
+    maxFileSize=$4
+    delayForGeneration=$5
+else
+    echo "Invalid arguments"
+    exit 1
+fi
 
 trapFunction(){
     pkill generation
